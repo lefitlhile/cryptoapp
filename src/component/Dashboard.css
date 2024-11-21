@@ -1,0 +1,409 @@
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f9f9f9;
+}
+
+.dashboard {
+    display: flex;
+}
+
+.sidebar {
+    width: 263px;
+    height: 100vh;
+    background-color: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 32px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.logo img {
+    margin-right: 10px;
+}
+
+.logo span {
+    font-weight: 700;
+    font-size: 21px;
+    color: #1a1a1a;
+}
+
+.navigation ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    color: #9e9e9e;
+    cursor: pointer;
+}
+
+.navigation li.active {
+    color: #6154f0;
+}
+
+.navigation li img {
+    margin-right: 20px;
+}
+
+.navigation li span {
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    width: 355px;
+    background-color: #fff;
+}
+
+.search-bar input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    color: #828282;
+}
+
+.search-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.header-icons img {
+    margin: 0 16px;
+    cursor: pointer;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.user-details {
+    display: flex;
+    align-items: center;
+}
+
+.user-name {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: #1a1a1a;
+    margin-right: 5px;
+}
+
+.user-handle {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: #828282;
+    margin-right: 5px;
+}
+
+.arrow-down {
+    width: 24px;
+    height: 24px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.statistic-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background-color: white;
+    border-radius: 10px;
+    padding: 32px 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 252px;
+    height: 205px;
+}
+
+.icon-container {
+    margin-bottom: 24px;
+}
+
+.crypto-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background-color: #f0b90b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stats-container {
+    margin-bottom: 10px;
+}
+
+.price {
+    font-family: 'Poppins', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    line-height: 42px;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+}
+
+.crypto-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #9e9e9e;
+}
+
+.change-container {
+    display: flex;
+    align-items: center;
+    color: #1ecb4f;
+}
+
+.arrow-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+}
+
+.percentage {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22.45px;
+}
+
+.market-transactions {
+    display: flex;
+    gap: 20px;
+}
+
+.live-market {
+    padding: 20px;
+    max-width: 800px;
+}
+
+h2 {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 31.5px;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+}
+
+.market-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.market-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.market-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.market-name {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.market-icon {
+    width: 50px;
+    height: 50px;
+}
+
+.market-pair {
+    font-size: 14px;
+    color: #9e9e9e;
+    opacity: 0.8;
+}
+
+.market-change {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.market-price {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.market-graph {
+    width: 162px;
+    height: 40px;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+.transactions {
+    width: 320px;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+.transactions-heading {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 31.5px;
+    color: #1a1a1a;
+    margin: 0 0 24px 0;
+}
+
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 100%;
+}
+
+.transaction-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.transaction-info {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+    flex: 1;
+}
+
+.transaction-name {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    color: #1a1a1a;
+}
+
+.transaction-type {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #9e9e9e;
+}
+
+.transaction-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.transaction-amount {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0.32px;
+    color: #1a1a1a;
+    text-align: right;
+}
+
+.transaction-time {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 21px;
+    color: #9e9e9e;
+    text-align: right;
+}
+
+/* Ensure all the sidebar items have a default color */
+.sidebar .navigation ul li {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    cursor: pointer;
+    color: #a0a0a0; /* Default gray color */
+    transition: color 0.3s, background-color 0.3s;
+}
+
+/* Hover effect for all sidebar items */
+.sidebar .navigation ul li:hover {
+    color: #6154F0; /* Match the color of the Overview icon */
+    background-color: rgba(171, 162, 220, 0.1); /* Light background color on hover */
+}
+
+/* Active state for the Overview item */
+.sidebar .navigation ul li.active {
+    color: #6154F0; /* Color for active icon (Overview) */
+    background-color: rgba(171, 162, 220, 0.1); /* Light background color for active item */
+}
+
+/* Icon color inside the sidebar items */
+.sidebar .navigation ul li img {
+    margin-right: 10px;
+    transition: filter 0.3s, transform 0.3s;
+}
+
+/* Change the icon color on hover */
+.sidebar .navigation ul li:hover img {
+    filter: invert(26%) sepia(91%) saturate(4663%) hue-rotate(206deg) brightness(91%) contrast(95%); /* Ensures the icon matches text color */
+}
+
+/* Specific style for the active icon */
+.sidebar .navigation ul li.active img {
+    filter: invert(26%) sepia(91%) saturate(4663%) hue-rotate(206deg) brightness(91%) contrast(95%); /* Same color effect for active icon */
+}
