@@ -1,10 +1,13 @@
-// src/components/Dashboard.js
+
 import React from 'react';
 import './Dashboard.css';
 import logo from './img/Logo.png';
 import WindowIcon from '@mui/icons-material/Window';
 import PriceGraph from './PriceGraph';  // Import the PriceGraph component
-import bitcoin from './img/iconmonstr-payment-30-120.png';
+import etherum from './img/Group 334.png';
+import cardano from './img/Group 335.png';
+import litecoin from './img/Group 336.png';
+import bitcoin from './img/Group 333.png';
 import walleticon from './img/wallet-2.png';
 import charticon from './img/graph.png';
 import settings from './img/setting-2.png';
@@ -15,7 +18,52 @@ import search from './img/search-normal.png';
 import notification from './img/notification.png';
 import help from './img/help.png';
 import arrow from './img/arrow-down.png';
+import etherumicon from './img/Etherumicon.png';
+import bitcoinicon from './img/bitcoinicon.png';
+import litecoinicon from './img/Litecoinicon.png';
+import cardanoicon from './img/Cardanoicon.png';
 
+
+
+// MarketCard Component - Updated to accept 'icon' prop
+const StatisticCard = ({ price, name, change, iconColor, icon }) => {
+  return (
+    <div className="statistic-card">
+      <div className="icon" style={{ backgroundColor: iconColor }}>
+        <img src={icon} alt={`${name} icon`} width="52" height="52" />
+      </div>
+      <div className="stats">
+        <div className="price">{price}</div>
+        <div className="name">{name}</div>
+      </div>
+      <div className="change">
+        <img src="https://placeholder.pics/svg/18x18" alt="arrow" width="18" height="18" />
+        <span className="percentage">{change}</span>
+      </div>
+    </div>
+  );
+};
+
+// LiveMarket Component
+const LiveMarket = () => {
+  const marketData = [
+    { name: "Ethereum", symbol: "ETH / USDT", change: "+14.02%", price: "39,786 USD", icon: etherumicon, iconColor: "#627eea" },
+    { name: "Bitcoin", symbol: "BTC / USDT", change: "+4.02%", price: "21,786 USD", icon: bitcoinicon, iconColor: "#f2a900" },
+    { name: "Litecoin", symbol: "LTC / USDT", change: "-4.02%", price: "9,786 USD", icon: litecoinicon, iconColor: "#345c9c" },
+    { name: "Cardano", symbol: "ADA / USDT", change: "+0.02%", price: "4,786 USD", icon: cardanoicon, iconColor: "#3cc29e" },
+  ];
+
+  return (
+    <div className="live-market">
+      <h2>Live Market</h2>
+      <div className="market-list">
+        {marketData.map((market, index) => (
+          <StatisticCard key={index} {...market} />
+        ))}
+      </div>
+    </div>
+  );
+};
 
 // Sidebar Component
 function Sidebar() {
@@ -36,7 +84,7 @@ function Sidebar() {
             <span>Chart</span>
           </li>
           <li>
-            <img src={walleticon}alt="Transactions Icon" />
+            <img src={walleticon} alt="Transactions Icon" />
             <span>Transactions</span>
           </li>
           <li>
@@ -60,6 +108,7 @@ function Sidebar() {
     </div>
   );
 }
+
 // Header Component
 function Header() {
   const username = localStorage.getItem('username') || 'Guest'; // Retrieve username or default to 'Guest'
@@ -86,68 +135,7 @@ function Header() {
   );
 }
 
-
-// StatisticCard Component
-function StatisticCard({ price, name, change, iconColor }) {
-  return (
-    <div className="statistic-card">
-      <div className="icon" style={{ backgroundColor: iconColor }}>
-        <img src="https://placeholder.pics/svg/52x52" alt="icon" width="52" height="52" />
-      </div>
-      <div className="stats">
-        <div className="price">{price}</div>
-        <div className="name">{name}</div>
-      </div>
-      <div className="change">
-        <img src="https://placeholder.pics/svg/18x18" alt="arrow" width="18" height="18" />
-        <span className="percentage">{change}</span>
-      </div>
-    </div>
-  );
-}
-
-// LiveMarket Component
-const LiveMarket = () => {
-  const data = [
-    { name: 'Ethereum', symbol: 'ETH / USDT', change: '+14.02%', price: '39,786 USD', graphColor: 'blue' },
-    { name: 'Bitcoin', symbol: 'BTC / USDT', change: '+4.02%', price: '21,786 USD', graphColor: 'orange' },
-    { name: 'Litecoin', symbol: 'LTC / USDT', change: '-4.02%', price: '9,786 USD', graphColor: 'purple' },
-    { name: 'Cardano', symbol: 'ADA / USDT', change: '+0.02%', price: '4,786 USD', graphColor: 'green' },
-  ];
-
-  return (
-    <div className="live-market">
-      <h2>Live Market</h2>
-      <div className="market-list">
-        {data.map((item, index) => (
-          <div key={index} className="market-item">
-            <div className="market-info">
-              <div className="market-name">
-                <img src={bitcoin} alt="icon" className="market-icon" />
-                <div>
-                  <div className="name">{item.name}</div>
-                  <div className="symbol">{item.symbol}</div>
-                </div>
-              </div>
-              <div className="market-change" style={{ color: item.change.includes('-') ? '#ff8d4d' : '#1ecb4f' }}>
-                Change
-                <span>{item.change}</span>
-              </div>
-              <div className="market-price">
-                Price
-                <span>{item.price}</span>
-              </div>
-            </div>
-            <div className="market-graph">
-              <img src={`https://placeholder.pics/svg/162x40/${item.graphColor}`} alt="graph" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
+// Dashboard Component
 function Dashboard() {
   return (
     <div className="dashboard">
@@ -157,10 +145,10 @@ function Dashboard() {
         <div className="bitcoin-chart-and-cards">
           {/* Statistics Cards */}
           <div className="statistics">
-            <StatisticCard price="$40,291" name="Bitcoin - BTC" change="+0.25%" iconColor="#f2a900" />
-            <StatisticCard price="$18,291" name="Ethereum - ETH" change="+0.25%" iconColor="#627eea" />
-            <StatisticCard price="$8,291" name="Litecoin - ITL" change="+0.25%" iconColor="#345c9c" />
-            <StatisticCard price="$3,291" name="Cardano - ADA" change="-2.05%" iconColor="#3cc29e" />
+            <StatisticCard price="$40,291" name="Bitcoin - BTC" change="+0.25%" icon={bitcoin} iconColor="#f2a900" />
+            <StatisticCard price="$18,291" name="Ethereum - ETH" change="+0.25%" icon={etherum} iconColor="#627eea" />
+            <StatisticCard price="$8,291" name="Litecoin - ITL" change="+0.25%" icon={litecoin} iconColor="#345c9c" />
+            <StatisticCard price="$3,291" name="Cardano - ADA" change="-2.05%" icon={cardano} iconColor="#3cc29e" />
           </div>
 
           {/* Bitcoin Chart */}
@@ -176,6 +164,5 @@ function Dashboard() {
     </div>
   );
 }
-
 
 export default Dashboard;
