@@ -164,6 +164,42 @@ body {
     width: 252px;
     height: 205px;
 }
+.dashboard .main-content {
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    gap: 32px; /* Space between different sections */
+}
+
+.bitcoin-chart-and-cards {
+    display: flex;
+    gap: 32px; /* Space between cards and chart */
+    flex-wrap: wrap; /* Allows wrapping if necessary */
+}
+
+.statistics {
+    display: flex;
+    flex-wrap: wrap; /* Cards will wrap into multiple rows */
+    gap: 24px; /* Space between cards */
+    justify-content: space-between; /* Horizontal spacing */
+    flex: 1; /* Allows this section to take remaining space */
+}
+
+.statistic-card {
+    width: calc(50% - 12px); /* 50% width of the parent minus the gap */
+    box-sizing: border-box;
+}
+
+.bitcoin-chart {
+    flex: 1; /* Ensures the chart takes available space next to the cards */
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.bitcoin-chart h2 {
+    margin-bottom: 16px; /* Space between title and graph */
+}
+
 
 .icon-container {
     margin-bottom: 24px;

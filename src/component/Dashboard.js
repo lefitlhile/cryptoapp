@@ -60,8 +60,6 @@ function Sidebar() {
     </div>
   );
 }
-
-// Header Component
 // Header Component
 function Header() {
   const username = localStorage.getItem('username') || 'Guest'; // Retrieve username or default to 'Guest'
@@ -150,22 +148,26 @@ const LiveMarket = () => {
   );
 };
 
-// Dashboard Component
 function Dashboard() {
   return (
     <div className="dashboard">
       <Sidebar />
       <div className="main-content">
         <Header />
-        <div className="statistics">
-          <StatisticCard price="$40,291" name="Bitcoin - BTC" change="+0.25%" iconColor="#f2a900" />
-          <StatisticCard price="$18,291" name="Ethereum - ETH" change="+0.25%" iconColor="#627eea" />
-          <StatisticCard price="$8,291" name="Litecoin - ITL" change="+0.25%" iconColor="#345c9c" />
-          <StatisticCard price="$3,291" name="Cardano - ADA" change="-2.05%" iconColor="#3cc29e" />
-        </div>
-        <div className="bitcoin-chart">
-          <h2>Bitcoin Price Over the Last 6 Months</h2>
-          <PriceGraph />
+        <div className="bitcoin-chart-and-cards">
+          {/* Statistics Cards */}
+          <div className="statistics">
+            <StatisticCard price="$40,291" name="Bitcoin - BTC" change="+0.25%" iconColor="#f2a900" />
+            <StatisticCard price="$18,291" name="Ethereum - ETH" change="+0.25%" iconColor="#627eea" />
+            <StatisticCard price="$8,291" name="Litecoin - ITL" change="+0.25%" iconColor="#345c9c" />
+            <StatisticCard price="$3,291" name="Cardano - ADA" change="-2.05%" iconColor="#3cc29e" />
+          </div>
+
+          {/* Bitcoin Chart */}
+          <div className="bitcoin-chart">
+            <h2>Bitcoin Price Over the Last 6 Months</h2>
+            <PriceGraph />
+          </div>
         </div>
         <div className="market-transactions">
           <LiveMarket />
@@ -174,5 +176,6 @@ function Dashboard() {
     </div>
   );
 }
+
 
 export default Dashboard;
