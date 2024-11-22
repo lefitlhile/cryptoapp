@@ -62,7 +62,10 @@ function Sidebar() {
 }
 
 // Header Component
+// Header Component
 function Header() {
+  const username = localStorage.getItem('username') || 'Guest'; // Retrieve username or default to 'Guest'
+
   return (
     <div className="header">
       <div className="search-bar">
@@ -76,14 +79,15 @@ function Header() {
       <div className="user-info">
         <img src="https://placeholder.pics/svg/40x40" alt="user avatar" className="avatar" />
         <div className="user-details">
-          <span className="user-name">Laurice</span>
-          <span className="user-handle">@laurice22</span>
+          <span className="user-name">{username}</span> {/* Display the dynamic username */}
+          <span className="user-handle">@{username.toLowerCase()}22</span>
           <img src={arrow} alt="arrow down" className="arrow-icon" />
         </div>
       </div>
     </div>
   );
 }
+
 
 // StatisticCard Component
 function StatisticCard({ price, name, change, iconColor }) {

@@ -8,34 +8,35 @@ import cardano from './img/Group 335.png';
 import litecoin from './img/Group 336.png';
 import bitcoin from './img/Group 333.png';
 
+
 function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const navigate = useNavigate();
 
-  // Handle login with username and password
   const handleLogin = () => {
-    // Simple username/password validation (can be expanded to use a backend)
     if (username === 'user' && password === 'password') {
       localStorage.setItem('authToken', 'my-auth-token');
+      localStorage.setItem('username', username); // Store username in localStorage
       navigate('/dashboard');
     } else {
       alert('Invalid credentials');
     }
   };
-
+  
   // Handle Google login
   const handleGoogleLogin = (response) => {
     if (response.credential) {
       const token = response.credential;
       localStorage.setItem('authToken', token);
+      localStorage.setItem('username', 'GoogleUser'); // Store a placeholder or actual user info from Google
       navigate('/dashboard');
     } else {
       alert('Google login failed');
     }
   };
-
+  
   return (
     <div className="login-container">
       {/* Slideshow at the top */}
@@ -89,4 +90,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default Login; 

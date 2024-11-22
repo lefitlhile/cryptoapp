@@ -1,4 +1,4 @@
-// src/api/coinCapApi.js
+
 import axios from 'axios';
 
 const COINCAP_API_URL = 'https://api.coincap.io/v2';
