@@ -1,0 +1,129 @@
+/* Login.css */
+
+/* Style for the login container */
+.login-container {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  margin: 50px auto;
+  text-align: center;
+  box-shadow: 0 0 15px 3px rgba(138, 43, 226, 0.5), 0 0 25px 3px rgba(0, 0, 255, 0.5); /* Purple and blue shadow */
+  position: relative;
+  overflow: hidden; /* Ensures logo doesn't overflow the container */
+}
+
+/* Slideshow container styles */
+.crypto-slideshow {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+/* Each slide in the slideshow */
+.slide {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  animation: slide-animation 12s infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+.slide img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: opacity 0.5s ease;
+}
+
+/* Slide animation (changing the opacity and position) */
+@keyframes slide-animation {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  40% { opacity: 0; }
+  60% { opacity: 0; }
+  80% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.crypto-slideshow .slide:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.crypto-slideshow .slide:nth-child(2) {
+  animation-delay: 3s;
+}
+
+.crypto-slideshow .slide:nth-child(3) {
+  animation-delay: 6s;
+}
+
+.crypto-slideshow .slide:nth-child(4) {
+  animation-delay: 9s;
+}
+
+/* Styling the logo container */
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Center the content vertically */
+}
+
+/* Logo styles */
+.logo {
+  width: 150px;
+  height: auto;
+}
+
+/* Input field styles */
+.input-field {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Login button styles */
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #6200ea; /* Purple color */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.login-button:hover {
+  background-color: #3700b3; /* Darker purple on hover */
+}
+
+/* Google login container */
+.google-login-container {
+  margin-top: 20px;
+}
+
+p {
+  margin-top: 20px;
+}
+
+a {
+  color: #6200ea;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
