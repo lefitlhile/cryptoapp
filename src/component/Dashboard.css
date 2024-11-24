@@ -512,3 +512,124 @@ h2 {
     cursor: pointer;
   }
   
+  /* Flex container for live market and transaction components */
+.live-market-and-transactions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  /* Styling for the live market component */
+  .live-market {
+    flex: 1;
+  }
+  
+  /* Styling for the transaction card container */
+  /* Flex container for live market and transaction components */
+.live-market-and-transactions {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  /* Styling for the live market component */
+  .live-market {
+    flex: 1;
+  }
+  
+  /* Styling for the transaction container */
+  .transaction-box {
+    flex: 0 0 400px; /* Adjust the width of the transaction box */
+    background-color: #fff; /* White background for the card */
+    height: fit-content;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0; /* Light border around the card */
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Space between child elements */
+  }
+  
+  /* Styling for each small transaction card */
+  .transaction-card {
+    display: flex;
+    flex-direction: column;
+    padding: 8px; /* Reduced padding for smaller cards */
+    border-radius: 6px;
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-size: 12px; /* Smaller font for compact view */
+    gap: 4px; /* Space between elements */
+  }
+  
+  .transaction-card h3 {
+    font-size: 14px; /* Reduced font size */
+    margin-bottom: 6px;
+  }
+  
+  .transaction-card p {
+    font-size: 12px; /* Reduced font size */
+    color: #777;
+  }
+  
+  /* Additional icon style for small cards */
+  .transaction-card .icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: #345c9c;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .transaction-heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .transaction-row {
+    display: flex;
+    justify-content: space-between; /* Distribute space evenly */
+    align-items: center; /* Vertically center items */
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd; /* Add a border between transactions */
+  }
+  
+  .transaction-details {
+    display: flex;
+    align-items: center; /* Align the icon and text vertically */
+  }
+  
+  .crypto-icon {
+    width: 30px; /* Adjust icon size */
+    height: 30px;
+    margin-right: 10px; /* Space between icon and text */
+  }
+  
+  .transaction-info {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .crypto-name {
+    font-weight: bold;
+  }
+  
+  .transaction-type {
+    font-size: 12px;
+    color: #666;
+  }
+  
+  .transaction-amount {
+    font-weight: bold;
+    font-size: 16px;
+  }
+  
+  .transaction-time {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  

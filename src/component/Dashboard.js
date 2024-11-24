@@ -21,6 +21,8 @@ import vector from './img/Vector.png';
 import chatbotIcon from './img/chat-box (2).png'; // Chatbot icon
 import axios from 'axios';
 
+// Import Transaction component
+import Transaction from './Transaction'; // Import your Transaction component
 
 // Chatbot Modal Component
 const ChatbotModal = ({ isOpen, onClose }) => {
@@ -261,7 +263,12 @@ const Dashboard = () => {
             <PriceGraph priceHistory={bitcoinPriceHistory} />
           </div>
         </div>
-        <LiveMarket />
+        <div className="live-market-and-transactions">
+          <LiveMarket />
+          <div className="transaction-box">
+            <Transaction /> {/* Transaction component in a small box */}
+          </div>
+        </div>
         <div className="chatbot-icon" onClick={handleChatbotToggle}>
           <img src={chatbotIcon} alt="Chatbot Icon" />
         </div>
