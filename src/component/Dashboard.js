@@ -1,9 +1,8 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import logo from './img/Logo.png';
 import WindowIcon from '@mui/icons-material/Window';
-import PriceGraph from './PriceGraph';  // Import the PriceGraph component
+import PriceGraph from './PriceGraph'; 
 import etherum from './img/Group 334.png';
 import cardano from './img/Group 335.png';
 import litecoin from './img/Group 336.png';
@@ -18,27 +17,47 @@ import search from './img/search-normal.png';
 import notification from './img/notification.png';
 import help from './img/help.png';
 import arrow from './img/arrow-down.png';
-import etherumicon from './img/Etherumicon.png';
-import bitcoinicon from './img/bitcoinicon.png';
-import litecoinicon from './img/Litecoinicon.png';
-import cardanoicon from './img/Cardanoicon.png';
 
+import vector from './img/Vector.png';
+import axios from 'axios';
 
-
-// MarketCard Component - Updated to accept 'icon' prop
+// StatisticCard Component
 const StatisticCard = ({ price, name, change, iconColor, icon }) => {
+  const isPositive = change.startsWith('+'); 
+
   return (
     <div className="statistic-card">
-      <div className="icon" style={{ backgroundColor: iconColor }}>
-        <img src={icon} alt={`${name} icon`} width="52" height="52" />
+      <div
+        className="icon"
+        style={{
+          backgroundColor: iconColor, 
+        }}
+      >
+        <img
+          src={icon}
+          alt={`${name} icon`}
+          width="52"
+          height="52"
+        />
       </div>
       <div className="stats">
         <div className="price">{price}</div>
         <div className="name">{name}</div>
       </div>
       <div className="change">
-        <img src="https://placeholder.pics/svg/18x18" alt="arrow" width="18" height="18" />
-        <span className="percentage">{change}</span>
+        <img
+          src={vector}
+          alt={isPositive ? 'arrow up' : 'arrow down'}
+          style={{
+            transform: isPositive ? 'rotate(0deg)' : 'rotate(180deg)', // Rotate for negative change
+            filter: isPositive
+              ? 'none'
+              : 'invert(25%) sepia(66%) saturate(5936%) hue-rotate(354deg) brightness(94%) contrast(103%)', // Arrow turns red for negative
+          }}
+          width="18"
+          height="18"
+        />
+        <span style={{ color: isPositive ? 'green' : 'red' }}>{change}</span>
       </div>
     </div>
   );
@@ -46,24 +65,68 @@ const StatisticCard = ({ price, name, change, iconColor, icon }) => {
 
 // LiveMarket Component
 const LiveMarket = () => {
-  const marketData = [
-    { name: "Ethereum", symbol: "ETH / USDT", change: "+14.02%", price: "39,786 USD", icon: etherumicon, iconColor: "#627eea" },
-    { name: "Bitcoin", symbol: "BTC / USDT", change: "+4.02%", price: "21,786 USD", icon: bitcoinicon, iconColor: "#f2a900" },
-    { name: "Litecoin", symbol: "LTC / USDT", change: "-4.02%", price: "9,786 USD", icon: litecoinicon, iconColor: "#345c9c" },
-    { name: "Cardano", symbol: "ADA / USDT", change: "+0.02%", price: "4,786 USD", icon: cardanoicon, iconColor: "#3cc29e" },
-  ];
+  const [marketData, setMarketData] = useState([]);
+
+  // Fetch live market data from CoinCap API
+  const fetchMarketData = async () => {
+    try {
+      const response = await axios.get('https://api.coincap.io/v2/assets', {
+        params: {
+          ids: 'bitcoin,ethereum,litecoin,cardano',
+          limit: 4,
+        },
+      });
+
+      if (response && response.data && response.data.data) {
+        setMarketData(response.data.data);
+      } else {
+        console.error('Unexpected API response format:', response);
+      }
+    } catch (error) {
+      console.error('Error fetching market data', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMarketData(); 
+    const interval = setInterval(fetchMarketData, 30000); // Update every 30 seconds
+    return () => clearInterval(interval); 
+  }, []);
 
   return (
     <div className="live-market">
       <h2>Live Market</h2>
       <div className="market-list">
-        {marketData.map((market, index) => (
-          <StatisticCard key={index} {...market} />
-        ))}
+        {marketData.length > 0 ? (
+          marketData.map((market, index) => {
+            
+            console.log(`changePercent24Hr for ${market.name}:`, market.changePercent24Hr);
+
+            
+            const changePercent = parseFloat(market.changePercent24Hr);
+            const formattedChange = !isNaN(changePercent)
+              ? (changePercent > 0 ? '+' : '') + changePercent.toFixed(2) + '%'
+              : 'N/A'; // If the value is not a valid number, show 'N/A'
+
+            return (
+              <StatisticCard
+                key={index}
+                name={market.name}
+                price={`$${parseFloat(market.priceUsd).toLocaleString()}`}
+                change={formattedChange}
+                icon={`https://cryptoicons.org/api/icon/${market.id.toLowerCase()}`} // CoinCap icon
+                iconColor="#345c9c" 
+              />
+            );
+          })
+        ) : (
+          <p>Loading market data...</p>
+        )}
       </div>
     </div>
   );
 };
+
 
 // Sidebar Component
 function Sidebar() {
@@ -77,7 +140,7 @@ function Sidebar() {
         <ul>
           <li className="active">
             <WindowIcon />
-            <span className='Overview Icon'>Overview</span>
+            <span className="Overview Icon">Overview</span>
           </li>
           <li>
             <img src={charticon} alt="Chart Icon" />
@@ -111,7 +174,7 @@ function Sidebar() {
 
 // Header Component
 function Header() {
-  const username = localStorage.getItem('username') || 'Guest'; // Retrieve username or default to 'Guest'
+  const username = localStorage.getItem('username') || 'Guest';
 
   return (
     <div className="header">
@@ -126,7 +189,7 @@ function Header() {
       <div className="user-info">
         <img src="https://placeholder.pics/svg/40x40" alt="user avatar" className="avatar" />
         <div className="user-details">
-          <span className="user-name">{username}</span> {/* Display the dynamic username */}
+          <span className="user-name">{username}</span>
           <span className="user-handle">@{username.toLowerCase()}22</span>
           <img src={arrow} alt="arrow down" className="arrow-icon" />
         </div>
@@ -137,24 +200,49 @@ function Header() {
 
 // Dashboard Component
 function Dashboard() {
+  const [bitcoinPriceHistory, setBitcoinPriceHistory] = useState([]);
+
+  const fetchBitcoinPriceHistory = async () => {
+    try {
+      const response = await axios.get('https://api.coincap.io/v2/assets/bitcoin/history', {
+        params: {
+          interval: 'd1', // Daily data
+          start: Date.now() - 180 * 24 * 60 * 60 * 1000, // Last 6 months
+          end: Date.now(),
+        },
+      });
+
+      // Transform data into an easier format for the chart
+      const prices = response.data.data.map(item => ({
+        timestamp: item.timestamp, 
+        price: item.priceUsd, 
+      }));
+
+      setBitcoinPriceHistory(prices);
+    } catch (error) {
+      console.error('Error fetching historical data', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchBitcoinPriceHistory();
+  }, []);
+
   return (
     <div className="dashboard">
       <Sidebar />
       <div className="main-content">
         <Header />
         <div className="bitcoin-chart-and-cards">
-          {/* Statistics Cards */}
           <div className="statistics">
             <StatisticCard price="$40,291" name="Bitcoin - BTC" change="+0.25%" icon={bitcoin} iconColor="#f2a900" />
-            <StatisticCard price="$18,291" name="Ethereum - ETH" change="+0.25%" icon={etherum} iconColor="#627eea" />
-            <StatisticCard price="$8,291" name="Litecoin - ITL" change="+0.25%" icon={litecoin} iconColor="#345c9c" />
-            <StatisticCard price="$3,291" name="Cardano - ADA" change="-2.05%" icon={cardano} iconColor="#3cc29e" />
+            <StatisticCard price="$18,291" name="Ethereum - ETH" change="-0.25%" icon={etherum} iconColor="#627eea" />
+            <StatisticCard price="$8,291" name="Litecoin - ITL" change="-4.02%" icon={litecoin} iconColor="#345c9c" />
+            <StatisticCard price="$3,291" name="Cardano - ADA" change="+0.12%" icon={cardano} iconColor="#3cc29e" />
           </div>
-
-          {/* Bitcoin Chart */}
           <div className="bitcoin-chart">
             <h2>Bitcoin Price Over the Last 6 Months</h2>
-            <PriceGraph />
+            <PriceGraph priceData={bitcoinPriceHistory} />
           </div>
         </div>
         <div className="market-transactions">

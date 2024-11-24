@@ -443,3 +443,18 @@ h2 {
 .sidebar .navigation ul li.active img {
     filter: invert(26%) sepia(91%) saturate(4663%) hue-rotate(206deg) brightness(91%) contrast(95%); /* Same color effect for active icon */
 }
+.change {
+    display: flex;
+    align-items: center;
+  }
+  
+  .change img {
+    margin-right: 5px;
+  }
+  
+  .change span {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  
