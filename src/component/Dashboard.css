@@ -456,5 +456,59 @@ h2 {
     font-size: 14px;
     font-weight: bold;
   }
+  /* Floating Chatbot Icon */
+.chatbot-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #007bff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+  }
   
+  .chatbot-icon img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  /* Chatbot Modal Styles */
+  .chatbot-modal {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    height: 400px;
+    z-index: 1000;
+  }
+  
+  .chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+  
+  .chatbot-body {
+    padding: 20px;
+    overflow-y: auto;
+  }
+  
+  .chatbot-header button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
   

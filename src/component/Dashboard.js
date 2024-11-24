@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './Dashboard.css';
 import logo from './img/Logo.png';
 import WindowIcon from '@mui/icons-material/Window';
-import PriceGraph from './PriceGraph'; 
+import PriceGraph from './PriceGraph';
 import etherum from './img/Group 334.png';
 import cardano from './img/Group 335.png';
 import litecoin from './img/Group 336.png';
@@ -17,28 +17,41 @@ import search from './img/search-normal.png';
 import notification from './img/notification.png';
 import help from './img/help.png';
 import arrow from './img/arrow-down.png';
-
 import vector from './img/Vector.png';
+import chatbotIcon from './img/chat-box (2).png'; // Chatbot icon
 import axios from 'axios';
+
+
+// Chatbot Modal Component
+const ChatbotModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="chatbot-modal">
+      <div className="chatbot-header">
+        <h3>Chat with Us</h3>
+        <button onClick={onClose}>Close</button>
+      </div>
+      <div className="chatbot-body">
+        <p>This is a placeholder chat window.</p>
+      </div>
+    </div>
+  );
+};
 
 // StatisticCard Component
 const StatisticCard = ({ price, name, change, iconColor, icon }) => {
-  const isPositive = change.startsWith('+'); 
+  const isPositive = change.startsWith('+');
 
   return (
     <div className="statistic-card">
       <div
         className="icon"
         style={{
-          backgroundColor: iconColor, 
+          backgroundColor: iconColor,
         }}
       >
-        <img
-          src={icon}
-          alt={`${name} icon`}
-          width="52"
-          height="52"
-        />
+        <img src={icon} alt={`${name} icon`} width="52" height="52" />
       </div>
       <div className="stats">
         <div className="price">{price}</div>
@@ -67,7 +80,14 @@ const StatisticCard = ({ price, name, change, iconColor, icon }) => {
 const LiveMarket = () => {
   const [marketData, setMarketData] = useState([]);
 
-  // Fetch live market data from CoinCap API
+  // Local icons mapping
+  const cryptoIcons = {
+    bitcoin: bitcoin,
+    ethereum: etherum,
+    litecoin: litecoin,
+    cardano: cardano,
+  };
+
   const fetchMarketData = async () => {
     try {
       const response = await axios.get('https://api.coincap.io/v2/assets', {
@@ -77,7 +97,7 @@ const LiveMarket = () => {
         },
       });
 
-      if (response && response.data && response.data.data) {
+      if (response?.data?.data) {
         setMarketData(response.data.data);
       } else {
         console.error('Unexpected API response format:', response);
@@ -88,9 +108,9 @@ const LiveMarket = () => {
   };
 
   useEffect(() => {
-    fetchMarketData(); 
-    const interval = setInterval(fetchMarketData, 30000); // Update every 30 seconds
-    return () => clearInterval(interval); 
+    fetchMarketData();
+    const interval = setInterval(fetchMarketData, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -99,14 +119,10 @@ const LiveMarket = () => {
       <div className="market-list">
         {marketData.length > 0 ? (
           marketData.map((market, index) => {
-            
-            console.log(`changePercent24Hr for ${market.name}:`, market.changePercent24Hr);
-
-            
             const changePercent = parseFloat(market.changePercent24Hr);
             const formattedChange = !isNaN(changePercent)
               ? (changePercent > 0 ? '+' : '') + changePercent.toFixed(2) + '%'
-              : 'N/A'; // If the value is not a valid number, show 'N/A'
+              : 'N/A';
 
             return (
               <StatisticCard
@@ -114,8 +130,8 @@ const LiveMarket = () => {
                 name={market.name}
                 price={`$${parseFloat(market.priceUsd).toLocaleString()}`}
                 change={formattedChange}
-                icon={`https://cryptoicons.org/api/icon/${market.id.toLowerCase()}`} // CoinCap icon
-                iconColor="#345c9c" 
+                icon={cryptoIcons[market.id.toLowerCase()] || ''}
+                iconColor="#345c9c"
               />
             );
           })
@@ -127,53 +143,49 @@ const LiveMarket = () => {
   );
 };
 
-
 // Sidebar Component
-function Sidebar() {
-  return (
-    <div className="sidebar">
-      <div className="logo">
-        <img src={logo} alt="Logo" />
-        <span className="logo-text"></span>
-      </div>
-      <nav className="navigation">
-        <ul>
-          <li className="active">
-            <WindowIcon />
-            <span className="Overview Icon">Overview</span>
-          </li>
-          <li>
-            <img src={charticon} alt="Chart Icon" />
-            <span>Chart</span>
-          </li>
-          <li>
-            <img src={walleticon} alt="Transactions Icon" />
-            <span>Transactions</span>
-          </li>
-          <li>
-            <img src={transact} alt="Wallet Icon" />
-            <span>Wallet</span>
-          </li>
-          <li>
-            <img src={message} alt="Mail Box Icon" />
-            <span>Mail Box</span>
-          </li>
-          <li>
-            <img src={settings} alt="Setting Icon" />
-            <span>Setting</span>
-          </li>
-          <li>
-            <img src={logout} alt="Logout Icon" />
-            <span>Logout</span>
-          </li>
-        </ul>
-      </nav>
+const Sidebar = () => (
+  <div className="sidebar">
+    <div className="logo">
+      <img src={logo} alt="Logo" />
     </div>
-  );
-}
+    <nav className="navigation">
+      <ul>
+        <li className="active">
+          <WindowIcon />
+          <span>Overview</span>
+        </li>
+        <li>
+          <img src={charticon} alt="Chart Icon" />
+          <span>Chart</span>
+        </li>
+        <li>
+          <img src={walleticon} alt="Transactions Icon" />
+          <span>Transactions</span>
+        </li>
+        <li>
+          <img src={transact} alt="Wallet Icon" />
+          <span>Wallet</span>
+        </li>
+        <li>
+          <img src={message} alt="Mail Box Icon" />
+          <span>Mail Box</span>
+        </li>
+        <li>
+          <img src={settings} alt="Setting Icon" />
+          <span>Setting</span>
+        </li>
+        <li>
+          <img src={logout} alt="Logout Icon" />
+          <span>Logout</span>
+        </li>
+      </ul>
+    </nav>
+  </div>
+);
 
 // Header Component
-function Header() {
+const Header = () => {
   const username = localStorage.getItem('username') || 'Guest';
 
   return (
@@ -196,26 +208,26 @@ function Header() {
       </div>
     </div>
   );
-}
+};
 
 // Dashboard Component
-function Dashboard() {
+const Dashboard = () => {
   const [bitcoinPriceHistory, setBitcoinPriceHistory] = useState([]);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   const fetchBitcoinPriceHistory = async () => {
     try {
       const response = await axios.get('https://api.coincap.io/v2/assets/bitcoin/history', {
         params: {
-          interval: 'd1', // Daily data
-          start: Date.now() - 180 * 24 * 60 * 60 * 1000, // Last 6 months
+          interval: 'd1',
+          start: Date.now() - 180 * 24 * 60 * 60 * 1000,
           end: Date.now(),
         },
       });
 
-      // Transform data into an easier format for the chart
       const prices = response.data.data.map(item => ({
-        timestamp: item.timestamp, 
-        price: item.priceUsd, 
+        timestamp: item.timestamp,
+        price: item.priceUsd,
       }));
 
       setBitcoinPriceHistory(prices);
@@ -227,6 +239,10 @@ function Dashboard() {
   useEffect(() => {
     fetchBitcoinPriceHistory();
   }, []);
+
+  const handleChatbotToggle = () => {
+    setIsChatbotOpen(!isChatbotOpen);
+  };
 
   return (
     <div className="dashboard">
@@ -242,15 +258,17 @@ function Dashboard() {
           </div>
           <div className="bitcoin-chart">
             <h2>Bitcoin Price Over the Last 6 Months</h2>
-            <PriceGraph priceData={bitcoinPriceHistory} />
+            <PriceGraph priceHistory={bitcoinPriceHistory} />
           </div>
         </div>
-        <div className="market-transactions">
-          <LiveMarket />
+        <LiveMarket />
+        <div className="chatbot-icon" onClick={handleChatbotToggle}>
+          <img src={chatbotIcon} alt="Chatbot Icon" />
         </div>
+        <ChatbotModal isOpen={isChatbotOpen} onClose={handleChatbotToggle} />
       </div>
     </div>
   );
-}
+};
 
 export default Dashboard;
