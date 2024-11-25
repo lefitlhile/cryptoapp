@@ -20,10 +20,9 @@ import notification from './img/notification.png';
 import help from './img/help.png';
 import arrow from './img/arrow-down.png';
 import vector from './img/Vector.png';
-import chatbotIcon from './img/chat-box (2).png'; // Chatbot icon
-
-// Import Transaction component
-import Transaction from './Transaction'; // Import your Transaction component
+import chatbotIcon from './img/chat-box (2).png';
+import { LineChart, Line, ResponsiveContainer } from 'recharts';
+import Transaction from './Transaction'; 
 
 // Chatbot Modal Component
 const ChatbotModal = ({ isOpen, onClose }) => {
@@ -42,44 +41,63 @@ const ChatbotModal = ({ isOpen, onClose }) => {
   );
 };
 
-// StatisticCard Component
-const StatisticCard = ({ price, name, change, iconColor, icon }) => {
+
+
+const StatisticCard = ({ price, name, change, iconColor, icon, priceHistory }) => {
   const isPositive = change.startsWith('+');
 
   return (
     <div className="statistic-card">
-      <div
-        className="icon"
-        style={{
-          backgroundColor: iconColor,
-        }}
-      >
-        <img src={icon} alt={`${name} icon`} width="52" height="52" />
-      </div>
-      <div className="stats">
-        <div className="price">{price}</div>
-        <div className="name">{name}</div>
-      </div>
-      <div className="change">
-        <img
-          src={vector}
-          alt={isPositive ? 'arrow up' : 'arrow down'}
+      {/* Left Section: Icon, Name, Price */}
+      <div className="left-section">
+        <div
+          className="icon"
           style={{
-            transform: isPositive ? 'rotate(0deg)' : 'rotate(180deg)', // Rotate for negative change
-            filter: isPositive
-              ? 'none'
-              : 'invert(25%) sepia(66%) saturate(5936%) hue-rotate(354deg) brightness(94%) contrast(103%)', // Arrow turns red for negative
+            backgroundColor: iconColor,
           }}
-          width="18"
-          height="18"
-        />
-        <span style={{ color: isPositive ? 'green' : 'red' }}>{change}</span>
+        >
+          <img src={icon} alt={`${name} icon`} width="52" height="52" />
+        </div>
+        <div className="stats">
+          <div className="name">{name}</div>
+          <div className="price">{price}</div> {/* Price moved below the name */}
+        </div>
+        <div className="change">
+          <img
+            src={vector}
+            alt={isPositive ? 'arrow up' : 'arrow down'}
+            style={{
+              transform: isPositive ? 'rotate(0deg)' : 'rotate(180deg)',
+              filter: isPositive
+                ? 'none'
+                : 'invert(25%) sepia(66%) saturate(5936%) hue-rotate(354deg) brightness(94%) contrast(103%)',
+            }}
+            width="18"
+            height="18"
+          />
+          <span style={{ color: isPositive ? 'green' : 'red' }}>{change}</span>
+        </div>
+      </div>
+
+      {/* Right Section: Line Chart */}
+      <div className="right-section">
+        <ResponsiveContainer width="100%" height={50}>
+          <LineChart data={priceHistory}>
+            <Line
+              type="monotone"
+              dataKey="price"
+              stroke={isPositive ? '#00b300' : '#ff4d4d'} // Green for positive, red for negative
+              strokeWidth={2}
+              dot={false}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
     </div>
   );
 };
 
-// LiveMarket Component
+
 const LiveMarket = () => {
   const [marketData, setMarketData] = useState([]);
 
@@ -91,6 +109,7 @@ const LiveMarket = () => {
     cardano: cardano,
   };
 
+  // Fetch market data and historical data
   const fetchMarketData = async () => {
     try {
       const response = await axios.get('https://api.coincap.io/v2/assets', {
@@ -101,7 +120,32 @@ const LiveMarket = () => {
       });
 
       if (response?.data?.data) {
-        setMarketData(response.data.data);
+        const marketDataWithHistory = await Promise.all(
+          response.data.data.map(async (market) => {
+            const historyResponse = await axios.get(
+              `https://api.coincap.io/v2/assets/${market.id}/history`,
+              {
+                params: {
+                  interval: 'h1',
+                  start: Date.now() - 24 * 60 * 60 * 1000, // Last 24 hours
+                  end: Date.now(),
+                },
+              }
+            );
+
+            const priceHistory = historyResponse.data.data.map((entry) => ({
+              time: new Date(entry.time).toLocaleTimeString(),
+              price: parseFloat(entry.priceUsd),
+            }));
+
+            return {
+              ...market,
+              priceHistory,
+            };
+          })
+        );
+
+        setMarketData(marketDataWithHistory);
       } else {
         console.error('Unexpected API response format:', response);
       }
@@ -112,7 +156,7 @@ const LiveMarket = () => {
 
   useEffect(() => {
     fetchMarketData();
-    const interval = setInterval(fetchMarketData, 30000);
+    const interval = setInterval(fetchMarketData, 30000); // Refresh every 30 seconds
     return () => clearInterval(interval);
   }, []);
 
@@ -135,6 +179,7 @@ const LiveMarket = () => {
                 change={formattedChange}
                 icon={cryptoIcons[market.id.toLowerCase()] || ''}
                 iconColor="#345c9c"
+                priceHistory={market.priceHistory || []}
               />
             );
           })
