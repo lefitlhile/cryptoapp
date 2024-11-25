@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // For navigation
+import axios from 'axios'; // For API calls
 import './Dashboard.css';
 import logo from './img/Logo.png';
 import WindowIcon from '@mui/icons-material/Window';
@@ -19,7 +21,6 @@ import help from './img/help.png';
 import arrow from './img/arrow-down.png';
 import vector from './img/Vector.png';
 import chatbotIcon from './img/chat-box (2).png'; // Chatbot icon
-import axios from 'axios';
 
 // Import Transaction component
 import Transaction from './Transaction'; // Import your Transaction component
@@ -216,7 +217,9 @@ const Header = () => {
 const Dashboard = () => {
   const [bitcoinPriceHistory, setBitcoinPriceHistory] = useState([]);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const navigate = useNavigate();
 
+  // Fetch historical Bitcoin data
   const fetchBitcoinPriceHistory = async () => {
     try {
       const response = await axios.get('https://api.coincap.io/v2/assets/bitcoin/history', {
@@ -238,9 +241,15 @@ const Dashboard = () => {
     }
   };
 
+  // Check if the user is authenticated (JWT token present)
   useEffect(() => {
-    fetchBitcoinPriceHistory();
-  }, []);
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      navigate('/login'); // Redirect to login if no token
+    } else {
+      fetchBitcoinPriceHistory();
+    }
+  }, [navigate]);
 
   const handleChatbotToggle = () => {
     setIsChatbotOpen(!isChatbotOpen);

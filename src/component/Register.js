@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'; // To redirect after successful r
 const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const history = useHistory();
 
@@ -14,6 +15,7 @@ const Register = () => {
       const response = await axios.post('http://localhost:5000/api/register', {
         email,
         password,
+        username,
       });
       if (response.status === 201) {
         // Redirect to login page after successful registration
@@ -29,6 +31,13 @@ const Register = () => {
       <h2>Register</h2>
       {error && <div className="error">{error}</div>}
       <form onSubmit={handleRegister}>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Enter username"
+          required
+        />
         <input
           type="email"
           value={email}
