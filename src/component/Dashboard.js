@@ -40,53 +40,48 @@ const ChatbotModal = ({ isOpen, onClose }) => {
     </div>
   );
 };
-
-
-
-const StatisticCard = ({ price, name, change, iconColor, icon, priceHistory }) => {
+const StatisticCard = ({ price, name, change, icon, priceHistory }) => {
   const isPositive = change.startsWith('+');
 
   return (
     <div className="statistic-card">
-      {/* Left Section: Icon, Name, Price */}
-      <div className="left-section">
-        <div
-          className="icon"
+      {/* Top-right Section: Arrow and Change */}
+      <div className="top-right">
+        <img
+          src={vector}
+          alt={isPositive ? 'arrow up' : 'arrow down'}
           style={{
-            backgroundColor: iconColor,
+            transform: isPositive ? 'rotate(0deg)' : 'rotate(180deg)',
+            filter: isPositive
+              ? 'none'
+              : 'invert(25%) sepia(66%) saturate(5936%) hue-rotate(354deg) brightness(94%) contrast(103%)',
           }}
-        >
-          <img src={icon} alt={`${name} icon`} width="52" height="52" />
-        </div>
-        <div className="stats">
-          <div className="name">{name}</div>
-          <div className="price">{price}</div> {/* Price moved below the name */}
-        </div>
-        <div className="change">
-          <img
-            src={vector}
-            alt={isPositive ? 'arrow up' : 'arrow down'}
-            style={{
-              transform: isPositive ? 'rotate(0deg)' : 'rotate(180deg)',
-              filter: isPositive
-                ? 'none'
-                : 'invert(25%) sepia(66%) saturate(5936%) hue-rotate(354deg) brightness(94%) contrast(103%)',
-            }}
-            width="18"
-            height="18"
-          />
-          <span style={{ color: isPositive ? 'green' : 'red' }}>{change}</span>
-        </div>
+          className="arrow"
+        />
+        <span className="change" style={{ color: isPositive ? 'green' : 'red' }}>
+          {change}
+        </span>
       </div>
 
+      {/* Left Section: Icon */}
+      <div className="icon">
+        <img src={icon} alt={`${name} icon`} />
+      </div>
+
+      {/* Middle Section: Price */}
+      <div className="price">{price}</div>
+
+      {/* Bottom Section: Crypto Name */}
+      <div className="name">{name}</div>
+
       {/* Right Section: Line Chart */}
-      <div className="right-section">
-        <ResponsiveContainer width="100%" height={50}>
+      <div className="chart">
+        <ResponsiveContainer width="100%" height={40}>
           <LineChart data={priceHistory}>
             <Line
               type="monotone"
               dataKey="price"
-              stroke={isPositive ? '#00b300' : '#ff4d4d'} // Green for positive, red for negative
+              stroke={isPositive ? '#00b300' : '#ff4d4d'}
               strokeWidth={2}
               dot={false}
             />
@@ -101,7 +96,6 @@ const StatisticCard = ({ price, name, change, iconColor, icon, priceHistory }) =
 const LiveMarket = () => {
   const [marketData, setMarketData] = useState([]);
 
-  // Local icons mapping
   const cryptoIcons = {
     bitcoin: bitcoin,
     ethereum: etherum,
@@ -109,12 +103,11 @@ const LiveMarket = () => {
     cardano: cardano,
   };
 
-  // Fetch market data and historical data
   const fetchMarketData = async () => {
     try {
-      const response = await axios.get('https://api.coincap.io/v2/assets', {
+      const response = await axios.get("https://api.coincap.io/v2/assets", {
         params: {
-          ids: 'bitcoin,ethereum,litecoin,cardano',
+          ids: "bitcoin,ethereum,litecoin,cardano",
           limit: 4,
         },
       });
@@ -126,7 +119,7 @@ const LiveMarket = () => {
               `https://api.coincap.io/v2/assets/${market.id}/history`,
               {
                 params: {
-                  interval: 'h1',
+                  interval: "h1",
                   start: Date.now() - 24 * 60 * 60 * 1000, // Last 24 hours
                   end: Date.now(),
                 },
@@ -146,11 +139,9 @@ const LiveMarket = () => {
         );
 
         setMarketData(marketDataWithHistory);
-      } else {
-        console.error('Unexpected API response format:', response);
       }
     } catch (error) {
-      console.error('Error fetching market data', error);
+      console.error("Error fetching market data", error);
     }
   };
 
@@ -163,24 +154,67 @@ const LiveMarket = () => {
   return (
     <div className="live-market">
       <h2>Live Market</h2>
+      {/* Table Header */}
+      <div className="market-header">
+        <span className="header-name">Crypto</span>
+        <span className="header-price">Prices</span>
+        <span className="header-change">Change</span>
+        <span className="header-chart"></span>
+      </div>
+
+      {/* Market List */}
       <div className="market-list">
         {marketData.length > 0 ? (
           marketData.map((market, index) => {
             const changePercent = parseFloat(market.changePercent24Hr);
             const formattedChange = !isNaN(changePercent)
-              ? (changePercent > 0 ? '+' : '') + changePercent.toFixed(2) + '%'
-              : 'N/A';
+              ? (changePercent > 0 ? "+" : "") + changePercent.toFixed(2) + "%"
+              : "N/A";
 
             return (
-              <StatisticCard
-                key={index}
-                name={market.name}
-                price={`$${parseFloat(market.priceUsd).toLocaleString()}`}
-                change={formattedChange}
-                icon={cryptoIcons[market.id.toLowerCase()] || ''}
-                iconColor="#345c9c"
-                priceHistory={market.priceHistory || []}
-              />
+              <div key={index} className="market-item">
+                {/* Crypto Name and Icon */}
+                <div className="market-info">
+                  <img
+                    src={cryptoIcons[market.id.toLowerCase()]}
+                    alt={`${market.name} icon`}
+                  />
+                  <div className="market-details">
+                    <div className="market-name">{market.name}</div>
+                    <div className="market-symbol">{market.symbol}</div>
+                  </div>
+                </div>
+
+                {/* Current Prices */}
+                <span className="market-price" style={{ color: "#000" }}>
+                  ${parseFloat(market.priceUsd).toLocaleString()}
+                </span>
+
+                {/* Percentage Change */}
+                <span
+                  className="market-change"
+                  style={{
+                    color: changePercent >= 0 ? "green" : "orange",
+                  }}
+                >
+                  {formattedChange}
+                </span>
+
+                {/* Prices Chart */}
+                <div className="market-chart">
+                  <ResponsiveContainer width={100} height={40}>
+                    <LineChart data={market.priceHistory || []}>
+                      <Line
+                        type="monotone"
+                        dataKey="price"
+                        stroke={changePercent >= 0 ? "#00b300" : "#ff9900"}
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
             );
           })
         ) : (
@@ -313,7 +347,7 @@ const Dashboard = () => {
             <StatisticCard price="$3,291" name="Cardano - ADA" change="+0.12%" icon={cardano} iconColor="#3cc29e" />
           </div>
           <div className="bitcoin-chart">
-            <h2>Bitcoin Price Over the Last 6 Months</h2>
+            <h2>BTC Price</h2>
             <PriceGraph priceHistory={bitcoinPriceHistory} />
           </div>
         </div>

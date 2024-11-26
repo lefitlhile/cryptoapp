@@ -154,16 +154,77 @@ body {
 }
 
 .statistic-card {
+    display: grid;
+    grid-template-rows: auto auto auto; /* Icon, Price, and Name rows */
+    grid-template-columns: 1fr auto; /* Content and chart columns */
+    align-items: center;
+    justify-items: center;
+    padding: 15px;
+    position: relative;
+    font-family: Arial, sans-serif;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  /* Top-right corner: Arrow and Change */
+  .statistic-card .top-right {
+    position: absolute;
+    top: 10px;
+    right: 20px;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    background-color: white;
-    border-radius: 10px;
-    padding: 32px 30px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 252px;
-    height: 205px;
-}
+    align-items: center;
+    gap: 5px;
+  }
+  
+  /* Arrow styling */
+  .statistic-card .top-right .arrow {
+    width: 15px;
+    height: 15px;
+  }
+  
+  /* Change text styling */
+  .statistic-card .top-right .change {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  /* Icon Section */
+  .statistic-card .icon {
+    grid-row: 1; /* Top row for icon */
+    justify-self: center; /* Center the icon */
+  }
+  
+  .statistic-card .icon img {
+    width: 40px;
+    height: 40px;
+  }
+  
+  /* Price Section */
+  .statistic-card .price {
+    grid-row: 2; /* Middle row for price */
+    font-size: 24px; /* Bigger and bold price styling */
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px; /* Reduce the space between price and name */
+  }
+  
+  /* Crypto Name Section */
+  .statistic-card .name {
+    grid-row: 3; /* Bottom row for crypto name, directly under price */
+    font-size: 14px;
+    color: #888;
+    text-align: center;
+  }
+  
+  /* Line Chart Section at the bottom-right corner */
+  .statistic-card .chart {
+    position: absolute;
+    bottom: 10px; /* Place the chart near the bottom */
+    right: 50px; /* Align the chart to the right near the arrow */
+    width: 120px; /* Control chart width */
+    height: 50px; /* Control chart height */
+  }
+  
+
 .dashboard .main-content {
     display: flex;
     flex-direction: column; /* Stack elements vertically */
@@ -522,6 +583,7 @@ h2 {
   /* Styling for the live market component */
   .live-market {
     flex: 1;
+    
   }
   
   /* Styling for the transaction card container */
@@ -539,7 +601,7 @@ h2 {
   
   /* Styling for the transaction container */
   .transaction-box {
-    flex: 0 0 400px; /* Adjust the width of the transaction box */
+    flex: 0 0 600px; /* Adjust the width of the transaction box */
     background-color: #fff; /* White background for the card */
     height: fit-content;
     padding: 10px;
@@ -673,22 +735,138 @@ h2 {
     width: 60%;
     height: 50px;
   }
-  .statistic-card .stats {
+  .statistic-card {
     display: flex;
-    flex-direction: column; /* Aligns name and price vertically */
-    margin-left: 10px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
   }
   
-  .statistic-card .name {
-    font-size: 14px; /* Keep the name slightly smaller */
-    font-weight: normal; /* Default weight for the name */
+  .left-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .line-chart {
+    width: 100%;
+    height: 50px;
+  }
+  .live-market-and-transactions {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px; /* Adjust spacing between the two sections */
+  }
+  
+  /* Header Row for Prices */
+.header-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .header-name {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+  }
+  
+  /* Live Market Section */
+.live-market {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+  }
+  
+  .market-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    font-weight: bold;
+    color: #333;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .header-name {
+    flex: 2;
+  }
+  
+  .header-price,
+  .header-change {
+    flex: 1;
+    text-align: right;
+  }
+  
+  .header-chart {
+    flex: 1.5;
+  }
+  
+  .market-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .market-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .market-info {
+    display: flex;
+    align-items: center;
+    flex: 2;
+  }
+  
+  .market-info img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .market-details {
+    font-size: 14px;
     color: #333;
   }
   
-  .statistic-card .price {
-    font-size: 18px; /* Keep the price big and bold */
-    font-weight: bold; /* Ensure bold font for the price */
-    color: #000; /* Ensure strong color for visibility */
-    margin-top: 4px; /* Add spacing between name and price */
+  .market-name {
+    font-weight: 600;
+  }
+  
+  .market-symbol {
+    font-size: 12px;
+    color: #888;
+  }
+  
+  .market-price {
+    flex: 1;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  
+  .market-change {
+    flex: 1;
+    text-align: right;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  .market-chart {
+    flex: 1.5;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
   
